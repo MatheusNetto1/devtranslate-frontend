@@ -1,27 +1,34 @@
-type SelectorProps = {
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+type ModernSelectorProps = {
   label: string;
   value: string;
   onChange: (val: string) => void;
   options: string[];
 };
 
-export function Selector({ label, value, onChange, options }: SelectorProps) {
+export function Selector({ label, value, onChange, options }: ModernSelectorProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="font-semibold text-gray-200">{label}</label>
-      <div className="backdrop-blur-md bg-gray-800/50 p-4 rounded-xl shadow-md">
-        <select
-          className="w-full p-3 rounded-md bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-700"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        >
+      <label className="text-sm font-medium text-gray-200">{label}</label>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="w-full bg-gray-800 border-gray-700 text-white focus:ring-2 focus:ring-blue-700">
+          <SelectValue placeholder="Selecione..." />
+        </SelectTrigger>
+        <SelectContent className="bg-gray-900 text-white border-gray-700">
           {options.map((opt) => (
-            <option key={opt} value={opt}>
+            <SelectItem key={opt} value={opt}>
               {opt}
-            </option>
+            </SelectItem>
           ))}
-        </select>
-      </div>
+        </SelectContent>
+      </Select>
     </div>
   );
 }
