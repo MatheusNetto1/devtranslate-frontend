@@ -6,7 +6,7 @@ Este repositório contém o frontend da aplicação, desenvolvido em **React + T
 
 ---
 
-## 🧱 Decisões Arquiteturais
+## Decisões Arquiteturais
 
 ### Modelo Arquitetural
 
