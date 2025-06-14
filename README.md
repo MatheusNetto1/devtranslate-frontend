@@ -6,6 +6,25 @@ Este repositório contém o frontend da aplicação, desenvolvido em **React + T
 
 ---
 
+## 🧱 Decisões Arquiteturais
+
+### Modelo Arquitetural
+
+O frontend segue o modelo de **SPA (Single Page Application)**.
+
+### Organização do Código
+
+- Separação por **responsabilidades**: cada pasta agrupa componentes ou arquivos com papel específico.
+- Utilização de **componentes reutilizáveis** (`CodeEditor`, `Selector`, `ConvertButton`, etc.) para manter o código limpo e escalável.
+- Estilização com **Tailwind CSS**, utilizando `clsx` e `tailwind-merge` para composição de classes utilitárias de forma segura.
+
+### Manutenção e Escalabilidade
+
+- O código está preparado para fácil expansão, por exemplo, inclusão de novos modelos de IA ou linguagens.
+- A camada `services/` centraliza chamadas à API, facilitando substituição posterior pela versão real da IA.
+
+---
+
 ## Estrutura do Projeto
 
 ```
@@ -60,6 +79,13 @@ npm install
 npm run dev
 ```
 Acesse **http://localhost:5173** no navegador para visualizar a aplicação.
+
+---
+
+## Observações
+
+- O projeto atualmente simula a tradução com um `setTimeout`.
+- A integração com IA real será feita futuramente por meio de requisições HTTP no serviço `translate.ts`.
 
 ---
 
