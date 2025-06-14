@@ -1,3 +1,4 @@
+// CodeEditor.tsx
 import { useState } from "react";
 import { ClipboardCheck, ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";

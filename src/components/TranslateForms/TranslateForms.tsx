@@ -1,58 +1,69 @@
-import { useState } from "react";
+// TranslateForms.tsx
+import { useEffect, useState } from "react";
 import { CodeEditor } from "../CodeEditor/CodeEditor";
 import { Selector } from "../Selector/Selector";
 import { toast } from "sonner";
 import { ConvertButton } from "../ConvertButton/ConvertButton";
+import { translateCode } from "@/services/translate";
+
+const LANGUAGES = ["JavaScript", "Python", "C#", "Java"] as const;
+const MODELS = ["GPT-4", "Claude", "Gemini"] as const;
+
+type Language = typeof LANGUAGES[number];
+type Model = typeof MODELS[number];
 
 export function TranslateForms() {
   const [inputCode, setInputCode] = useState("");
   const [outputCode, setOutputCode] = useState("");
-  const [sourceLanguage, setSourceLanguage] = useState("JavaScript");
-  const [language, setLanguage] = useState("Python");
-  const [model, setModel] = useState("GPT-4");
-  const [isLoading, setIsLoading] = useState(false); // 2. Crie o estado de loading
+  const [sourceLanguage, setSourceLanguage] = useState<Language>("JavaScript");
+  const [language, setLanguage] = useState<Language>("Python");
+  const [model, setModel] = useState<Model>("GPT-4");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleTranslate = () => {
-    setIsLoading(true); // 3. Ative o loading
-    toast.info("Traduzindo...");
+  useEffect(() => {
+    document.title = "DevTranslate";
+  }, []);
 
-    setTimeout(() => {
-      setOutputCode(
-        `// Traduzido de ${sourceLanguage} para ${language} usando ${model}\n\n${inputCode}`
-      );
+  const handleTranslate = async () => {
+    try {
+      setIsLoading(true);
+      toast.info("Traduzindo...");
+      const translated = await translateCode({
+        code: inputCode,
+        from: sourceLanguage,
+        to: language,
+        model,
+      });
+      setOutputCode(translated);
       toast.success("Tradução concluída!");
-      setIsLoading(false); // 4. Desative o loading ao concluir
-    }, 1000);
+    } catch (error) {
+      toast.error("Erro na tradução");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Selector
           label="Linguagem de origem"
           value={sourceLanguage}
-          onChange={setSourceLanguage}
-          options={["JavaScript", "Python", "C#", "Java"]}
+          onChange={(val) => setSourceLanguage(val as Language)}
+          options={LANGUAGES as unknown as string[]}
         />
         <Selector
           label="Linguagem de destino"
           value={language}
-          onChange={setLanguage}
-          options={["JavaScript", "Python", "C#", "Java"]}
+          onChange={(val) => setLanguage(val as Language)}
+          options={LANGUAGES as unknown as string[]}
         />
         <Selector
           label="Modelo de IA"
           value={model}
-          onChange={setModel}
-          options={["GPT-4", "Claude", "Gemini"]}
+          onChange={(val) => setModel(val as Model)}
+          options={MODELS as unknown as string[]}
         />
-        <div className="flex items-end">
-          <ConvertButton
-            loading={isLoading}
-            onClick={handleTranslate}
-            className="w-full"
-          />
-        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -65,6 +76,14 @@ export function TranslateForms() {
           label="Código traduzido"
           value={outputCode}
           readOnly
+        />
+      </div>
+
+      <div className="flex justify-center">
+        <ConvertButton
+          loading={isLoading}
+          onClick={handleTranslate}
+          className="w-full max-w-xs"
         />
       </div>
     </div>

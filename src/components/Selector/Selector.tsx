@@ -1,3 +1,4 @@
+// Selector.tsx
 import {
   Select,
   SelectContent,
@@ -6,14 +7,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type ModernSelectorProps = {
+type SelectorProps = {
   label: string;
   value: string;
   onChange: (val: string) => void;
   options: string[];
 };
 
-export function Selector({ label, value, onChange, options }: ModernSelectorProps) {
+export function Selector({ label, value, onChange, options }: SelectorProps) {
   return (
     <div className="flex flex-col gap-2">
       <label className="text-sm font-medium text-gray-200">{label}</label>
