@@ -71,10 +71,14 @@ export function TranslateForms() {
           label="Código original"
           value={inputCode}
           onChange={setInputCode}
+          language={sourceLanguage}
+          readOnly={false}
         />
+
         <CodeEditor
           label="Código traduzido"
           value={outputCode}
+          language={language}
           readOnly
         />
       </div>

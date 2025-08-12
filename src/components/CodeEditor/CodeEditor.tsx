@@ -2,12 +2,14 @@
 import { useState } from "react";
 import { ClipboardCheck, ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";
+import Editor from "@monaco-editor/react";
 
 type CodeEditorProps = {
   label: string;
   value: string;
   onChange?: (val: string) => void;
   readOnly?: boolean;
+  language?: string; // nova prop
 };
 
 export function CodeEditor({
@@ -15,6 +17,7 @@ export function CodeEditor({
   value,
   onChange,
   readOnly = false,
+  language = "javascript",
 }: CodeEditorProps) {
   const [copied, setCopied] = useState(false);
 
@@ -25,8 +28,25 @@ export function CodeEditor({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Mapeia nome amigável para o nome reconhecido pelo Monaco
+  const languageMap: Record<string, string> = {
+    javascript: "javascript",
+    typescript: "typescript",
+    python: "python",
+    java: "java",
+    csharp: "csharp",
+    cpp: "cpp",
+    go: "go",
+    php: "php",
+    ruby: "ruby",
+    rust: "rust",
+  };
+
+  const editorLanguage =
+    languageMap[language.toLowerCase()] || "plaintext";
+
   return (
-    <div className="flex flex-col gap-2 relative">
+    <div className="flex flex-col gap-2 relative w-full">
       <label className="font-semibold text-gray-200 mb-1">{label}</label>
       <button
         onClick={handleCopy}
@@ -35,12 +55,23 @@ export function CodeEditor({
       >
         {copied ? <ClipboardCheck size={20} /> : <ClipboardCopy size={20} />}
       </button>
-      <div className="backdrop-blur-md bg-[#0f172a] p-1 rounded-xl shadow-lg">
-        <textarea
-          className="w-full h-64 p-3 rounded-md bg-[#0b1120] text-gray-100 font-mono resize-none focus:outline-none focus:ring-2 focus:ring-blue-700"
+
+      <div className="backdrop-blur-md bg-[#0f172a] rounded-xl shadow-lg overflow-hidden">
+        <Editor
+          height="300px"
+          defaultLanguage={editorLanguage}
+          language={editorLanguage}
           value={value}
-          onChange={(e) => onChange?.(e.target.value)}
-          readOnly={readOnly}
+          onChange={(val) => onChange?.(val || "")}
+          options={{
+            readOnly,
+            minimap: { enabled: false },
+            fontSize: 14,
+            scrollBeyondLastLine: false,
+            wordWrap: "on",
+            theme: "vs-dark",
+            padding: { top: 10 },
+          }}
         />
       </div>
     </div>
