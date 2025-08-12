@@ -10,11 +10,23 @@ export async function translateCode({
   to: string;
   model: string;
 }) {
-  return new Promise<string>((resolve) => {
-    setTimeout(() => {
-      resolve(
-        `// Traduzido de ${from} para ${to} usando ${model}\n\n${code}`
-      );
-    }, 1000);
+  const res = await fetch("http://localhost:8000/translate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      code,
+      from_lang: from,
+      to_lang: to,
+      model,
+    }),
   });
+
+  if (!res.ok) {
+    throw new Error("Erro na tradução");
+  }
+
+  const data = await res.json();
+  return data.translated_code;
 }
