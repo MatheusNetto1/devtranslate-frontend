@@ -1,15 +1,15 @@
-// TranslateForms.tsx
+// src/components/TranslateForms/TranslateForms.tsx
 import { useEffect, useState } from "react";
 import { CodeEditor } from "../CodeEditor/CodeEditor";
 import { Selector } from "../Selector/Selector";
 import { toast } from "sonner";
 import { ConvertButton } from "../ConvertButton/ConvertButton";
 import { translateCode } from "@/services/translate";
+import { LANGUAGE_OPTIONS } from "@/constants/languages";
 
-const LANGUAGES = ["JavaScript", "Python", "C#", "Java"] as const;
 const MODELS = ["GPT-4", "Claude", "Gemini"] as const;
 
-type Language = typeof LANGUAGES[number];
+type Language = typeof LANGUAGE_OPTIONS[number]["label"];
 type Model = typeof MODELS[number];
 
 export function TranslateForms() {
@@ -45,27 +45,29 @@ export function TranslateForms() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Selectores */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Selector
           label="Linguagem de origem"
           value={sourceLanguage}
           onChange={(val) => setSourceLanguage(val as Language)}
-          options={LANGUAGES as unknown as string[]}
+          options={LANGUAGE_OPTIONS.map((opt) => opt.label)}
         />
         <Selector
           label="Linguagem de destino"
           value={language}
           onChange={(val) => setLanguage(val as Language)}
-          options={LANGUAGES as unknown as string[]}
+          options={LANGUAGE_OPTIONS.map((opt) => opt.label)}
         />
         <Selector
           label="Modelo de IA"
           value={model}
           onChange={(val) => setModel(val as Model)}
-          options={MODELS as unknown as string[]}
+          options={[...MODELS]}
         />
       </div>
 
+      {/* Editores */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <CodeEditor
           label="Código original"
@@ -83,6 +85,7 @@ export function TranslateForms() {
         />
       </div>
 
+      {/* Botão de conversão */}
       <div className="flex justify-center">
         <ConvertButton
           loading={isLoading}

@@ -1,15 +1,16 @@
-// CodeEditor.tsx
+// src/components/CodeEditor/CodeEditor.tsx
 import { useState } from "react";
 import { ClipboardCheck, ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";
 import Editor from "@monaco-editor/react";
+import { LANGUAGE_OPTIONS } from "@/constants/languages";
 
 type CodeEditorProps = {
   label: string;
   value: string;
   onChange?: (val: string) => void;
   readOnly?: boolean;
-  language?: string; // nova prop
+  language?: string;
 };
 
 export function CodeEditor({
@@ -28,22 +29,13 @@ export function CodeEditor({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Mapeia nome amigável para o nome reconhecido pelo Monaco
-  const languageMap: Record<string, string> = {
-    javascript: "javascript",
-    typescript: "typescript",
-    python: "python",
-    java: "java",
-    csharp: "csharp",
-    cpp: "cpp",
-    go: "go",
-    php: "php",
-    ruby: "ruby",
-    rust: "rust",
-  };
-
+  // Procura no array centralizado para garantir que a linguagem exista
   const editorLanguage =
-    languageMap[language.toLowerCase()] || "plaintext";
+    LANGUAGE_OPTIONS.find(
+      (opt) =>
+        opt.label.toLowerCase() === language.toLowerCase() ||
+        opt.value.toLowerCase() === language.toLowerCase()
+    )?.value || "plaintext";
 
   return (
     <div className="flex flex-col gap-2 relative w-full">
@@ -59,7 +51,6 @@ export function CodeEditor({
       <div className="backdrop-blur-md bg-[#0f172a] rounded-xl shadow-lg overflow-hidden">
         <Editor
           height="300px"
-          defaultLanguage={editorLanguage}
           language={editorLanguage}
           value={value}
           onChange={(val) => onChange?.(val || "")}
