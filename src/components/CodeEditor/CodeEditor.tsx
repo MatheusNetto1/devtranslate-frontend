@@ -3,14 +3,14 @@ import { useState } from "react";
 import { ClipboardCheck, ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";
 import Editor from "@monaco-editor/react";
-import { LANGUAGE_OPTIONS } from "@/constants/languages";
+import { LANGUAGE_OPTIONS, type LanguageLabel, type LanguageValue } from "@/constants/languages";
 
 type CodeEditorProps = {
   label: string;
   value: string;
   onChange?: (val: string) => void;
   readOnly?: boolean;
-  language?: string;
+  language?: LanguageLabel | LanguageValue;
 };
 
 export function CodeEditor({
@@ -29,12 +29,11 @@ export function CodeEditor({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Procura no array centralizado para garantir que a linguagem exista
   const editorLanguage =
     LANGUAGE_OPTIONS.find(
       (opt) =>
-        opt.label.toLowerCase() === language.toLowerCase() ||
-        opt.value.toLowerCase() === language.toLowerCase()
+        opt.label.toLowerCase() === String(language).toLowerCase() ||
+        opt.value.toLowerCase() === String(language).toLowerCase()
     )?.value || "plaintext";
 
   return (

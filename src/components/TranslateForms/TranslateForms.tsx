@@ -5,18 +5,14 @@ import { Selector } from "../Selector/Selector";
 import { toast } from "sonner";
 import { ConvertButton } from "../ConvertButton/ConvertButton";
 import { translateCode } from "@/services/translate";
-import { LANGUAGE_OPTIONS } from "@/constants/languages";
-
-const MODELS = ["GPT-4", "Claude", "Gemini"] as const;
-
-type Language = typeof LANGUAGE_OPTIONS[number]["label"];
-type Model = typeof MODELS[number];
+import { LANGUAGE_OPTIONS, type LanguageLabel } from "@/constants/languages";
+import { MODELS, type Model } from "@/constants/models";
 
 export function TranslateForms() {
   const [inputCode, setInputCode] = useState("");
   const [outputCode, setOutputCode] = useState("");
-  const [sourceLanguage, setSourceLanguage] = useState<Language>("JavaScript");
-  const [language, setLanguage] = useState<Language>("Python");
+  const [sourceLanguage, setSourceLanguage] = useState<LanguageLabel>("JavaScript");
+  const [targetLanguage, setTargetLanguage] = useState<LanguageLabel>("Python");
   const [model, setModel] = useState<Model>("GPT-4");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,12 +24,19 @@ export function TranslateForms() {
     try {
       setIsLoading(true);
       toast.info("Traduzindo...");
+
+      const fromValue =
+        LANGUAGE_OPTIONS.find((opt) => opt.label === sourceLanguage)?.value || "";
+      const toValue =
+        LANGUAGE_OPTIONS.find((opt) => opt.label === targetLanguage)?.value || "";
+
       const translated = await translateCode({
         code: inputCode,
-        from: sourceLanguage,
-        to: language,
+        from: fromValue,
+        to: toValue,
         model,
       });
+
       setOutputCode(translated);
       toast.success("Tradução concluída!");
     } catch (error) {
@@ -50,13 +53,13 @@ export function TranslateForms() {
         <Selector
           label="Linguagem de origem"
           value={sourceLanguage}
-          onChange={(val) => setSourceLanguage(val as Language)}
+          onChange={(val) => setSourceLanguage(val as LanguageLabel)}
           options={LANGUAGE_OPTIONS.map((opt) => opt.label)}
         />
         <Selector
           label="Linguagem de destino"
-          value={language}
-          onChange={(val) => setLanguage(val as Language)}
+          value={targetLanguage}
+          onChange={(val) => setTargetLanguage(val as LanguageLabel)}
           options={LANGUAGE_OPTIONS.map((opt) => opt.label)}
         />
         <Selector
@@ -80,7 +83,7 @@ export function TranslateForms() {
         <CodeEditor
           label="Código traduzido"
           value={outputCode}
-          language={language}
+          language={targetLanguage}
           readOnly
         />
       </div>
