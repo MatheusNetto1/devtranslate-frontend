@@ -12,4 +12,5 @@ export const LANGUAGE_OPTIONS = [
   { label: "Rust", value: "rust" },
 ] as const;
 
-export type LanguageOption = typeof LANGUAGE_OPTIONS[number];
+export type LanguageLabel = typeof LANGUAGE_OPTIONS[number]["label"];
+export type LanguageValue = typeof LANGUAGE_OPTIONS[number]["value"];
