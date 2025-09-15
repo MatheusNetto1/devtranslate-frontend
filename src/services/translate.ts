@@ -10,7 +10,6 @@ export async function translateCode({
   to: string;
   model: string;
 }) {
-  // Normalizar nomes de modelos para os esperados pelo backend
   const modelMapping: Record<string, string> = {
     "gpt-4": "openai",
     "gpt4": "openai",
@@ -21,7 +20,8 @@ export async function translateCode({
     "google": "gemini",
   };
 
-  const normalizedModel = modelMapping[model.toLowerCase()] || model.toLowerCase();
+  const normalizedModel =
+    modelMapping[model.toLowerCase()] || model.toLowerCase();
 
   const payload = { code, from, to, model: normalizedModel };
   console.log("Enviando para o backend:", payload);
@@ -40,5 +40,10 @@ export async function translateCode({
 
   const data = await res.json();
   console.log("Resposta do backend:", data);
-  return data.translated_code;
+
+  // Agora retornamos o objeto completo
+  return {
+    translatedCode: data.translated_code,
+    explanation: data.explanation,
+  };
 }

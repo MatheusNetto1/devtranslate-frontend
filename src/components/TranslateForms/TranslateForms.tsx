@@ -11,6 +11,7 @@ import { MODELS, type Model } from "@/constants/models";
 export function TranslateForms() {
   const [inputCode, setInputCode] = useState("");
   const [outputCode, setOutputCode] = useState("");
+  const [explanation, setExplanation] = useState(""); // <<<< novo estado
   const [sourceLanguage, setSourceLanguage] = useState<LanguageLabel>("JavaScript");
   const [targetLanguage, setTargetLanguage] = useState<LanguageLabel>("Python");
   const [model, setModel] = useState<Model>("GPT-4");
@@ -30,14 +31,15 @@ export function TranslateForms() {
       const toValue =
         LANGUAGE_OPTIONS.find((opt) => opt.label === targetLanguage)?.value || "";
 
-      const translated = await translateCode({
+      const { translatedCode, explanation } = await translateCode({
         code: inputCode,
         from: fromValue,
         to: toValue,
         model,
       });
 
-      setOutputCode(translated);
+      setOutputCode(translatedCode);
+      setExplanation(explanation); // <<<< salvar explicação
       toast.success("Tradução concluída!");
     } catch (error) {
       toast.error("Erro na tradução");
@@ -87,6 +89,13 @@ export function TranslateForms() {
           readOnly
         />
       </div>
+
+      {/* Nova caixa de explicação */}
+      {explanation && (
+        <div className="bg-gray-900 text-green-300 p-4 rounded-lg shadow-md font-mono whitespace-pre-wrap">
+          {explanation}
+        </div>
+      )}
 
       {/* Botão de conversão */}
       <div className="flex justify-center">
