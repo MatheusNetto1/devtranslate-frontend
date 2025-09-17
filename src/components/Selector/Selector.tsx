@@ -1,4 +1,4 @@
-// Selector.tsx
+// src/components/Selector/Selector.tsx
 import {
   Select,
   SelectContent,

@@ -1,4 +1,4 @@
-// Home.tsx
+// src/pages/Home.tsx
 import { TranslateForms } from "../components/TranslateForms/TranslateForms";
 
 export function Home() {

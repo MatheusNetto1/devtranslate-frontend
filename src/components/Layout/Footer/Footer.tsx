@@ -1,4 +1,4 @@
-// Footer.tsx
+// src/components/layout/Footer/Footer.tsx
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 p-4 mt-8">

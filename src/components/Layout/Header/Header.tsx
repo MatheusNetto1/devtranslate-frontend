@@ -1,4 +1,4 @@
-// Header.tsx
+// src/components/layout/Header/Header.tsx
 import { Code } from "lucide-react";
 
 export function Header() {

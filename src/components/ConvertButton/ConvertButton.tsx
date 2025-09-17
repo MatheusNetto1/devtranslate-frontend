@@ -1,4 +1,4 @@
-// ConvertButton.tsx
+// src/components/ConvertButton/ConvertButton.tsx
 import { Loader2, Repeat } from "lucide-react";
 
 type ConvertButtonProps = {

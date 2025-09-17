@@ -1,4 +1,4 @@
-// App.tsx
+// src/app/App.tsx
 import { AppRoutes } from "../routes/AppRoutes";
 import { Header } from "../components/Layout/Header/Header";
 import { Footer } from "../components/Layout/Footer/Footer";
