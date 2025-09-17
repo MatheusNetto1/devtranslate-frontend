@@ -5,6 +5,7 @@ import { Selector } from "../Selector/Selector";
 import { toast } from "sonner";
 import { ConvertButton } from "../ConvertButton/ConvertButton";
 import { translateCode } from "@/services/translate";
+import { ExplanationBox } from "../ExplanationBox/ExplanationBox";
 import { LANGUAGE_OPTIONS, type LanguageLabel } from "@/constants/languages";
 import { MODELS, type Model } from "@/constants/models";
 
@@ -91,11 +92,7 @@ export function TranslateForms() {
       </div>
 
       {/* Nova caixa de explicação */}
-      {explanation && (
-        <div className="bg-gray-900 text-green-300 p-4 rounded-lg shadow-md font-mono whitespace-pre-wrap">
-          {explanation}
-        </div>
-      )}
+      <ExplanationBox explanation={explanation} />
 
       {/* Botão de conversão */}
       <div className="flex justify-center">
