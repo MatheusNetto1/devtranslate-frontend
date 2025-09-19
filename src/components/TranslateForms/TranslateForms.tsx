@@ -7,15 +7,15 @@ import { ConvertButton } from "../ConvertButton/ConvertButton";
 import { translateCode } from "@/services/translate";
 import { ExplanationBox } from "../ExplanationBox/ExplanationBox";
 import { LANGUAGE_OPTIONS, type LanguageLabel } from "@/constants/languages";
-import { MODELS, type Model } from "@/constants/models";
+import { type Model } from "@/constants/models";
 
 export function TranslateForms() {
   const [inputCode, setInputCode] = useState("");
   const [outputCode, setOutputCode] = useState("");
-  const [explanation, setExplanation] = useState(""); // <<<< novo estado
-  const [sourceLanguage, setSourceLanguage] = useState<LanguageLabel>("JavaScript");
-  const [targetLanguage, setTargetLanguage] = useState<LanguageLabel>("Python");
-  const [model, setModel] = useState<Model>("GPT-4");
+  const [explanation, setExplanation] = useState("");
+  const [sourceLanguage, setSourceLanguage] = useState<LanguageLabel>("Python");
+  const [targetLanguage, setTargetLanguage] = useState<LanguageLabel>("C++");
+  const [model, setModel] = useState<Model>("Gemini"); // Gemini como padrão
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export function TranslateForms() {
       });
 
       setOutputCode(translatedCode);
-      setExplanation(explanation); // <<<< salvar explicação
+      setExplanation(explanation);
       toast.success("Tradução concluída!");
     } catch (error) {
       toast.error("Erro na tradução");
@@ -57,19 +57,31 @@ export function TranslateForms() {
           label="Linguagem de origem"
           value={sourceLanguage}
           onChange={(val) => setSourceLanguage(val as LanguageLabel)}
-          options={LANGUAGE_OPTIONS.map((opt) => opt.label)}
+          options={LANGUAGE_OPTIONS.map((opt) => ({
+            label: opt.label,
+            value: opt.label,
+          }))}
         />
+
         <Selector
           label="Linguagem de destino"
           value={targetLanguage}
           onChange={(val) => setTargetLanguage(val as LanguageLabel)}
-          options={LANGUAGE_OPTIONS.map((opt) => opt.label)}
+          options={LANGUAGE_OPTIONS.map((opt) => ({
+            label: opt.label,
+            value: opt.label,
+          }))}
         />
+
         <Selector
           label="Modelo de IA"
           value={model}
           onChange={(val) => setModel(val as Model)}
-          options={[...MODELS]}
+          options={[
+            { label: "Gemini", value: "Gemini" }, // disponível
+            { label: "GPT-4", value: "GPT-4", disabled: true }, // bloqueado
+            { label: "Claude", value: "Claude", disabled: true }, // bloqueado
+          ]}
         />
       </div>
 
@@ -91,7 +103,7 @@ export function TranslateForms() {
         />
       </div>
 
-      {/* Nova caixa de explicação */}
+      {/* Caixa de explicação */}
       <ExplanationBox explanation={explanation} />
 
       {/* Botão de conversão */}

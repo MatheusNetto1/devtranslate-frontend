@@ -7,11 +7,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+type Option = {
+  label: string;
+  value: string;
+  disabled?: boolean;
+};
+
 type SelectorProps = {
   label: string;
   value: string;
   onChange: (val: string) => void;
-  options: string[];
+  options: Option[];
 };
 
 export function Selector({ label, value, onChange, options }: SelectorProps) {
@@ -24,8 +30,20 @@ export function Selector({ label, value, onChange, options }: SelectorProps) {
         </SelectTrigger>
         <SelectContent className="bg-gray-900 text-white border-gray-700">
           {options.map((opt) => (
-            <SelectItem key={opt} value={opt}>
-              {opt}
+            <SelectItem
+              key={opt.value}
+              value={opt.value}
+              disabled={opt.disabled}
+              className={opt.disabled ? "opacity-60 cursor-not-allowed" : ""}
+            >
+              <div className="flex items-center justify-between w-full">
+                <span>{opt.label}</span>
+                {opt.disabled && (
+                  <span className="ml-2 text-xs bg-gray-700 text-gray-300 px-2 py-0.5 rounded">
+                    em breve
+                  </span>
+                )}
+              </div>
             </SelectItem>
           ))}
         </SelectContent>
