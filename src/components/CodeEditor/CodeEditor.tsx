@@ -36,9 +36,15 @@ export function CodeEditor({
         opt.value.toLowerCase() === String(language).toLowerCase()
     )?.value || "plaintext";
 
+  // 🔹 Antes do editor montar, apenas garante que vs-dark já esteja definido
+  function handleBeforeMount(monaco: any) {
+    monaco.editor.setTheme("vs-dark");
+  }
+
   return (
     <div className="flex flex-col gap-2 relative w-full">
       <label className="font-semibold text-gray-200 mb-1">{label}</label>
+
       <button
         onClick={handleCopy}
         className="absolute top-0 right-0 p-2 text-gray-400 hover:text-white transition"
@@ -47,19 +53,20 @@ export function CodeEditor({
         {copied ? <ClipboardCheck size={20} /> : <ClipboardCopy size={20} />}
       </button>
 
-      <div className="backdrop-blur-md bg-[#0f172a] rounded-xl shadow-lg overflow-hidden">
+      <div className="backdrop-blur-md rounded-xl shadow-lg overflow-hidden">
         <Editor
           height="300px"
           language={editorLanguage}
           value={value}
           onChange={(val) => onChange?.(val || "")}
+          theme="vs-dark" // 🔹 usa o tema oficial
+          beforeMount={handleBeforeMount}
           options={{
             readOnly,
             minimap: { enabled: false },
             fontSize: 14,
             scrollBeyondLastLine: false,
             wordWrap: "on",
-            theme: "vs-dark",
             padding: { top: 10 },
           }}
         />
