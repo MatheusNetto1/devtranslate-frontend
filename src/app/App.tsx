@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-950">
       <Header />
-      <div className="flex-grow p-8 text-gray-100">
+      <div className="flex-grow px-4 sm:px-8 text-gray-100 w-full">
         <AppRoutes />
       </div>
       <Footer />

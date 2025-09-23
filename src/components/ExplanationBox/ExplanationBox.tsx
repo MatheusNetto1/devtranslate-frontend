@@ -17,8 +17,8 @@ export function ExplanationBox({ explanation }: ExplanationBoxProps) {
         </h2>
       </div>
 
-      {/* Body */}
-      <div className="px-6 py-4 max-h-[320px] overflow-y-auto custom-scrollbar space-y-4">
+      {/* Body com altura responsiva */}
+      <div className="px-6 py-4 h-[30vh] sm:h-[35vh] lg:h-[40vh] overflow-y-auto custom-scrollbar space-y-4">
         <ReactMarkdown
           components={{
             p: ({ children }) => (

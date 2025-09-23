@@ -15,7 +15,7 @@ export function TranslateForms() {
   const [explanation, setExplanation] = useState("");
   const [sourceLanguage, setSourceLanguage] = useState<LanguageLabel>("Python");
   const [targetLanguage, setTargetLanguage] = useState<LanguageLabel>("C++");
-  const [model, setModel] = useState<Model>("Gemini"); // Gemini como padrão
+  const [model, setModel] = useState<Model>("Gemini");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -78,29 +78,33 @@ export function TranslateForms() {
           value={model}
           onChange={(val) => setModel(val as Model)}
           options={[
-            { label: "Gemini", value: "Gemini" }, // disponível
-            { label: "GPT-4", value: "GPT-4", disabled: true }, // bloqueado
-            { label: "Claude", value: "Claude", disabled: true }, // bloqueado
+            { label: "Gemini", value: "Gemini" },
+            { label: "GPT-4", value: "GPT-4", disabled: true },
+            { label: "Claude", value: "Claude", disabled: true },
           ]}
         />
       </div>
 
-      {/* Editores */}
+      {/* Editores responsivos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <CodeEditor
-          label="Código original"
-          value={inputCode}
-          onChange={setInputCode}
-          language={sourceLanguage}
-          readOnly={false}
-        />
+        <div className="flex flex-col h-[40vh] sm:h-[50vh]">
+          <CodeEditor
+            label="Código original"
+            value={inputCode}
+            onChange={setInputCode}
+            language={sourceLanguage}
+            readOnly={false}
+          />
+        </div>
 
-        <CodeEditor
-          label="Código traduzido"
-          value={outputCode}
-          language={targetLanguage}
-          readOnly
-        />
+        <div className="flex flex-col h-[40vh] sm:h-[50vh]">
+          <CodeEditor
+            label="Código traduzido"
+            value={outputCode}
+            language={targetLanguage}
+            readOnly
+          />
+        </div>
       </div>
 
       {/* Caixa de explicação */}

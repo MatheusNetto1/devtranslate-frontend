@@ -20,11 +20,10 @@ export function CodeEditor({
   readOnly = false,
   language = "javascript",
 }: CodeEditorProps) {
-  const storageKey = `codeEditor-collapsed-${label}`; // chave única por editor
+  const storageKey = `codeEditor-collapsed-${label}`;
   const [copied, setCopied] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
-  // Recupera do localStorage
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
@@ -57,7 +56,7 @@ export function CodeEditor({
   }
 
   return (
-    <div className="flex flex-col w-full rounded-xl overflow-hidden border border-slate-700 bg-neutral-900 shadow-lg">
+    <div className="flex flex-col w-full rounded-xl overflow-hidden border border-slate-700 bg-neutral-900 shadow-lg h-full">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2 bg-neutral-800/70 border-b border-slate-700">
         <div className="flex items-center gap-2">
@@ -87,14 +86,16 @@ export function CodeEditor({
         </div>
       </div>
 
-      {/* Editor com transição */}
+      {/* Editor com altura responsiva */}
       <div
-        className={`transition-all duration-300 ${
-          collapsed ? "max-h-0 opacity-0 pointer-events-none" : "max-h-[1000px] opacity-100"
+        className={`transition-all duration-300 flex-grow ${
+          collapsed
+            ? "max-h-0 opacity-0 pointer-events-none"
+            : "h-[40vh] sm:h-[50vh] opacity-100"
         }`}
       >
         <Editor
-          height="300px"
+          height="100%"
           language={editorLanguage}
           value={value}
           onChange={(val) => onChange?.(val || "")}
