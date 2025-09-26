@@ -79,7 +79,7 @@ export function TranslateForms() {
           onChange={(val) => setModel(val as Model)}
           options={[
             { label: "Gemini", value: "Gemini" },
-            { label: "GPT-4", value: "GPT-4", disabled: true },
+            { label: "GPT-4", value: "GPT-4" },
             { label: "Claude", value: "Claude", disabled: true },
           ]}
         />
